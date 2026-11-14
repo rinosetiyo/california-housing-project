@@ -77,3 +77,4 @@ python src/train_model.py
 ## Notes
 
 Project ini dibuat sebagai contoh sederhana untuk penerapan machine learning dalam prediksi harga properti menggunakan dataset California Housing. hoooreeeee
+# california-housing-project
