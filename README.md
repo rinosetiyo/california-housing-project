@@ -49,6 +49,15 @@ Proses pemilihan model dilakukan dengan membandingkan hasil metrik pada dataset 
 - Matplotlib
 - Seaborn
 
+-fastapi
+-uvicorn[standard]
+-pandas
+-numpy
+-scikit-learn
+-joblib
+-pydantic
+
+
 ## Project Workflow
 
 1. Load dan eksplorasi dataset
@@ -78,3 +87,33 @@ python src/train_model.py
 
 Project ini dibuat sebagai contoh sederhana untuk penerapan machine learning dalam prediksi harga properti menggunakan dataset California Housing. hoooreeeee
 # california-housing-project
+
+# DOckerfile
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ ./src/
+COPY models/ ./models/
+
+EXPOSE 8000
+
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# command docker
+docker build -t california-housing-api .
+
+docker images
+
+docker run -d -p 8000:8000 --name housing-api california-housing-api
+
+docker ps
+
+docker stop housing-api
+
+docker start housing-api

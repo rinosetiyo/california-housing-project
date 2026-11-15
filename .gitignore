@@ -1,1 +1,21 @@
-models/california_housing_model.joblib
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables and secrets
+.env
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
