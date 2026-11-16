@@ -1,18 +1,20 @@
 
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.prediction import predict_house_price
 
 app = FastAPI(
     title="California Housing Prediction API",
-    description="API untuk memprediksi estimasi harga rumah",
+    description="Machine Learning API for house price estimation",
     version="1.0.0"
 )
 
 
-# Struktur input yang wajib dikirim client
 class HouseInput(BaseModel):
+
+    model_config = ConfigDict(extra="forbid")
+
     MedInc: float = Field(allow_inf_nan=False)
     HouseAge: float = Field(allow_inf_nan=False)
     AveRooms: float = Field(allow_inf_nan=False)
@@ -23,15 +25,13 @@ class HouseInput(BaseModel):
     Longitude: float = Field(allow_inf_nan=False)
 
 
-# Endpoint untuk memeriksa API
 @app.get("/")
 def home():
     return {
-        "message": "California Housing Prediction API is running"
+        "message": "California Housing API is running"
     }
 
 
-# Endpoint untuk memeriksa kesiapan API
 @app.get("/health")
 def health():
     return {
@@ -39,7 +39,6 @@ def health():
     }
 
 
-# Endpoint prediksi
 @app.post("/predict")
 def predict(data: HouseInput):
 

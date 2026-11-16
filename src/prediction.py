@@ -1,35 +1,48 @@
 
 import joblib
 import pandas as pd
+
 from pathlib import Path
 
-# Lokasi folder utama proyek
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MODEL_PATH = (
-    BASE_DIR / "models" /
-    "california_housing_model.joblib"
+    BASE_DIR
+    / "models"
+    / "california_housing_artifact.joblib"
 )
 
-# Memuat model satu kali ketika modul diimpor
+# Memuat model ketika modul pertama kali digunakan
 artifact = joblib.load(MODEL_PATH)
 
 model = artifact["model"]
 feature_names = artifact["feature_names"]
 
 
-def predict_house_price(input_data):
+def predict_house_price(input_data: dict) -> float:
 
-    # Memastikan urutan fitur sesuai training
+    # Memeriksa apakah seluruh fitur tersedia
+    missing_features = [
+        feature
+        for feature in feature_names
+        if feature not in input_data
+    ]
+
+    if missing_features:
+        raise ValueError(
+            f"Missing features: {missing_features}"
+        )
+
+    # Menyesuaikan urutan fitur
     input_df = pd.DataFrame(
-        [input_data],
+        [[input_data[name] for name in feature_names]],
         columns=feature_names
     )
 
-    # Melakukan inference
+    # Menjalankan prediksi
     prediction = model.predict(input_df)
 
-    # Mengubah satuan menjadi USD
+    # Mengonversi satuan menjadi USD
     predicted_price = prediction[0] * 100000
 
     return float(predicted_price)

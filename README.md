@@ -74,6 +74,9 @@ Pastikan Python sudah terinstal di lingkungan Anda. Kemudian, install dependenci
 ```bash
 pip install pandas numpy scikit-learn matplotlib seaborn
 ```
+```bash
+pip install fastapi uvicorn pandas scikit-learn joblib
+```
 
 ## Usage
 
@@ -90,7 +93,7 @@ Project ini dibuat sebagai contoh sederhana untuk penerapan machine learning dal
 
 # DOckerfile
 
-FROM python:3.11-slim
+FROM python:3.14.4-slim
 
 WORKDIR /app
 
@@ -117,3 +120,15 @@ docker ps
 docker stop housing-api
 
 docker start housing-api
+
+## Run API
+
+uvicorn src.main:app --reload
+
+Open:
+
+http://127.0.0.1:8000/docs
+
+## Testing
+
+pytest -v
